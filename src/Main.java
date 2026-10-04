@@ -1,5 +1,6 @@
 import channel.Channel;
 import channel.EmailChannel;
+import channel.PushChannel;
 import channel.SmsChannel;
 import notification.Notification;
 import notification.Reminder;
@@ -20,6 +21,8 @@ public class Main {
     private static final String REMINDER_SMS = "[SMS] aidos <- Reminder: Team meeting at 10:00";
     private static final String ALERT_EMAIL = "[EMAIL] To: aidos | Subject: URGENT | Body: Server is down";
     private static final String ALERT_SMS = "[SMS] aidos <- URGENT: Server is down";
+    private static final String REMINDER_PUSH = "[PUSH] {device: aidos, title: Reminder, body: Team meeting at 10:00}";
+    private static final String ALERT_PUSH = "[PUSH] {device: aidos, title: URGENT, body: Server is down}";
 
     private record Outcome(String id, boolean passed, String headline, String detail, String expected) {
     }
@@ -35,6 +38,7 @@ public class Main {
     private static void runDemo() {
         Channel email = new EmailChannel();
         Channel sms = new SmsChannel();
+        Channel push = new PushChannel();
 
         List<Outcome> outcomes = new ArrayList<>();
         outcomes.add(checkCombination("T1", newReminder(email), email, REMINDER_EMAIL));
@@ -42,6 +46,8 @@ public class Main {
         outcomes.add(checkCombination("T3", newAlert(email), email, ALERT_EMAIL));
         outcomes.add(checkCombination("T4", newAlert(sms), sms, ALERT_SMS));
         outcomes.add(checkRuntimeSwitch());
+        outcomes.add(checkCombination("T6", newReminder(push), push, REMINDER_PUSH));
+        outcomes.add(checkCombination("T7", newAlert(push), push, ALERT_PUSH));
 
         outcomes.forEach(Main::print);
 

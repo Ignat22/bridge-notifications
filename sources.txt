@@ -5,3 +5,4 @@ src/notification/UrgentAlert.java
 src/channel/Channel.java
 src/channel/EmailChannel.java
 src/channel/SmsChannel.java
+src/channel/PushChannel.java
